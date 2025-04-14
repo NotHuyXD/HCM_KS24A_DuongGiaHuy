@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+</head>
+<body>
+    <div class="add-form">
+        <h1>Quản lý sự kiện</h1>
+        <form>
+            <div class="row">
+                <div id="nameInput">
+                    <h3>Tên sự kiện:</h3>
+                    <input type="text" id="eventName" required>
+                </div>
+                <div id="dateInput">
+                    <h3>Ngày tổ chức</h3>
+                    <input type="date" id="eventDate">
+                </div>
+            </div>
+            <div class="row">
+                <div id="placeInput">
+                    <h3>Địa điểm:</h3>
+                    <input type="text" id="eventPlace">
+                </div>
+                <div id="holderInput">
+                    <h3>Người tổ chức:</h3>
+                    <input type="text" id="eventHolder">
+                </div>
+            </div>
+            <br>
+            <button id="addNew" onclick="addEvent(event)">THÊM</button>
+        </form>
+    </div>
+    <div class="event-container">
+        <input type="text" id="eventSearch" onkeydown="searchEvent(event)" onkeyup="searchEvent(event)" placeholder="Tìm kiếm theo tên sự kiện...">
+        <table id="event-list" border="1">
+            <thead>
+                <th style="width:200px">Tên sự kiện</th>
+                <th style="width:100px">Ngày</th>
+                <th style="width:200px">Địa điểm</th>
+                <th style="width:100px">Người tổ chức</th>
+                <th style="width:150px">Hành động</th>
+            </thead>
+            <tbody id="event-section"></tbody>
+        </table>
+    </div>
+</body>
+</html>
