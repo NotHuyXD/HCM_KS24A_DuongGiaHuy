@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/project-manager.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="header">
+      <p>Quản lý dự án</p>
+      <div class="navbar">
+        <a href="../pages/category-manager.html">Dự án</a>
+        <a href="../pages/dashboard.html">Nhiệm vụ của tôi</a>
+        <a href="../pages/login.html">Đăng xuất</a>
+      </div>
+    </div>
+
+    <div class="detail-board">
+      <h2 id="taskboard-name"></h2>
+      <p id="taskboard-desc"></p>
+      <div class="feature-bar">
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#addModal"
+        >
+          + Thêm nhiệm vụ
+        </button>
+        <div>
+          <select id="filter" onchange="filterTask()" value="Sắp xếp theo">
+            <option value="all">Tất cả</option>
+            <option value="progress">Tiến độ</option>
+            <option value="priority">Độ ưu tiên</option>
+          </select>
+          <input type="text" id="search" placeholder="Tìm kiếm nhiệm vụ" />
+        </div>
+      </div>
+    </div>
+    <div class="manage-board">
+      <p>Danh sách nhiệm vụ</p>
+
+      <table border="0.5" id="task-table">
+        <thead>
+          <tr>
+            <th style="width: 20%">Tên nhiệm vụ</th>
+            <th style="width: 20%">Người phụ trách</th>
+            <th style="width: 10%">Ưu tiên</th>
+            <th style="width: 10%">Ngày bắt đầu</th>
+            <th style="width: 10%">Hạn chót</th>
+            <th style="width: 10%">Tiến độ</th>
+            <th style="width: 20%">Hành động</th>
+          </tr>
+        </thead>
+        <tbody class="taskSection" id="todoList" onclick="toggleList('todo')">
+          <tr>
+            <td><h5>To Do</h5></td>
+          </tr>
+        </tbody>
+        <tbody
+          class="taskSection"
+          id="inProgressList"
+          onclick="toggleList('inProgress')"
+        >
+          <tr>
+            <td><h5>In Progress</h5></td>
+          </tr>
+        </tbody>
+        <tbody
+          class="taskSection"
+          id="completedList"
+          onclick="toggleList('completed')"
+        >
+          <tr>
+            <td><h5>Completed</h5></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <footer class="footer">
+      <p>&copy; 2025 Team Management. All rights reserved</p>
+    </footer>
+
+    <div
+      class="modal fade"
+      id="addModal"
+      tabindex="-1"
+      aria-labelledby="addModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm/sửa nhiệm vụ</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2" id="name">
+              <label for="task-name" class="form-label">Tên nhiệm vụ</label>
+              <input type="text" id="task-name" class="form-control" />
+            </div>
+            <div class="mb-2" id="assigner">
+              <label for="task-assigner" class="form-label"
+                >Người phụ trách</label
+              >
+              <select id="task-assigner" class="form-control"></select>
+            </div>
+            <div class="mb-2" id="status">
+              <label for="task-status" class="form-label">Trạng thái</label>
+              <select id="task-status" class="form-control">
+                <option value="todo">To Do</option>
+                <option value="inProgress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            <div class="mb-2" id="beginDate">
+              <label for="task-beginDate" class="form-label"
+                >Ngày bắt đầu</label
+              >
+              <input type="date" id="task-beginDate" class="form-control" />
+            </div>
+            <div class="mb-2" id="endDate">
+              <label for="task-endDate" class="form-label">Hạn cuối</label>
+              <input type="date" id="task-endDate" class="form-control" />
+            </div>
+            <div class="mb-2" id="priority">
+              <label for="task-priority" class="form-label">Độ ưu tiên</label>
+              <select id="task-priority" class="form-control">
+                <option value="Cao">Cao</option>
+                <option value="Trung Bình">Trung Bình</option>
+                <option value="Thấp">Thấp</option>
+              </select>
+            </div>
+            <div class="mb-2" id="progress">
+              <label for="task-progress" class="form-label">Tiến độ</label>
+              <select id="task-progress" class="form-control">
+                <option value="onTime">Đúng tiến độ</option>
+                <option value="atRisk">Có rủi ro</option>
+                <option value="late">Trễ hạn</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button class="btn btn-success" onclick="addTask()">Thêm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Thêm/sửa nhiệm vụ</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2" id="name">
+              <label for="edit-name" class="form-label">Tên nhiệm vụ</label>
+              <input type="text" id="edit-name" class="form-control" />
+            </div>
+            <div class="mb-2" id="assigner">
+              <label for="edit-assigner" class="form-label"
+                >Người phụ trách</label
+              >
+              <select id="edit-assigner" class="form-control"></select>
+            </div>
+            <div class="mb-2" id="status">
+              <label for="edit-status" class="form-label">Trạng thái</label>
+              <select id="edit-status" class="form-control">
+                <option value="todo">To Do</option>
+                <option value="inProgress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+            <div class="mb-2" id="beginDate">
+              <label for="edit-beginDate" class="form-label"
+                >Ngày bắt đầu</label
+              >
+              <input type="date" id="edit-beginDate" class="form-control" />
+            </div>
+            <div class="mb-2" id="endDate">
+              <label for="edit-endDate" class="form-label">Hạn cuối</label>
+              <input type="date" id="edit-endDate" class="form-control" />
+            </div>
+            <div class="mb-2" id="priority">
+              <label for="edit-priority" class="form-label">Độ ưu tiên</label>
+              <select id="edit-priority" class="form-control">
+                <option value="Cao">Cao</option>
+                <option value="Trung Bình">Trung Bình</option>
+                <option value="Thấp">Thấp</option>
+              </select>
+            </div>
+            <div class="mb-2" id="progress">
+              <label for="edit-progress" class="form-label">Tiến độ</label>
+              <select id="edit-progress" class="form-control">
+                <option value="onTime">Đúng tiến độ</option>
+                <option value="atRisk">Có rủi ro</option>
+                <option value="late">Trễ hạn</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button class="btn btn-success" onclick="editTask()">Lưu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../js/project-manager.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </body>
+</html>
